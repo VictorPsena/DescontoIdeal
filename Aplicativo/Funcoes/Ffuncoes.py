@@ -320,9 +320,9 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
            continue
 
 
-opcao = 7
-taxa = TaxaBandeira('visa', 12, opcao )
-print(taxa)
-lista =ldp(200, 'visa', taxa )
-print(lista)
+# opcao = 7
+# taxa = TaxaBandeira('visa', 12, opcao )
+# print(taxa)
+# lista =ldp(200, 'visa', taxa )
+# print(lista)
 ###############################################################################################
