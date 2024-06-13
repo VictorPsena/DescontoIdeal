@@ -30,6 +30,32 @@ class Funcs():
             """)
         self.conn.commit(); print("Banco de dados criado")
         self.desconecta_bd()
+    def add_produtos(self):
+        self.bandeira = self.ent_bandeira.get()
+        self.db = self.ent_db.get()
+        self.par = self.ent_par.get()
+        self.val = self.ent_val.get()
+        self.quant = self.ent_quant.get()
+
+        self.cursor.execute(""" INSERT INTO clientes (nome_clientes, telefone, cidade)
+                            VALUES (?, ?, ?) """, (self.bandeira, self.db, self.par))
+        self.conn.commit()
+        self.desconecta_bd()
+        self.select_lista()
+        self.limpa_tela()
+
+    def select_lista(self):
+        self.ListaCli.delete(*self.ListaCli.get_children())
+        self.conecta_bd()
+        lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes    
+            ORDER BY nome_clientes ASC; """)
+        for i in lista:
+            self.ListaCli.insert("", END, values=i)
+        self.desconecta_bd()
+
+        
+        
+
 
 class Aplicativo(Funcs):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'
@@ -42,6 +68,7 @@ class Aplicativo(Funcs):
         self.widgets_frame_1()
         self.lista_frame_2()
         self.montaTabelas()
+        self.select_lista()
         root.mainloop()
 
     def tela(self):
@@ -87,7 +114,7 @@ class Aplicativo(Funcs):
 
          ###Criação do botão Cadastrar
         self.bt_cadastrar = Button(self.frame_title, text="Cadastrar", bd=2, bg='#107db4',  
-                                fg='White', font=('verdana', 8, 'bold'))
+                                fg='White', font=('verdana', 8, 'bold'), command=self.add_produtos)
         self.bt_cadastrar.place(relx= 0.6, rely=0.5, relheight=0.4)
 
         ### Criação da Label Title
