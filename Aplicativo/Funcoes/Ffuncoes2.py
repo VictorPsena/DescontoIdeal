@@ -1,5 +1,6 @@
 from tkinter import*
 from tkinter import ttk
+import sqlite3
 
 root = Tk()
 
@@ -10,7 +11,25 @@ class Funcs():
         self.ent_par.delete(0, END)
         self.ent_val.delete(0, END)
         self.ent_quant.delete(0, END)
-
+    def conecta_bd(self):
+        self.conn = sqlite3.connect('clientes.bd')
+        self.cursor = self.conn.cursor(); print('Conectando ao banco de dados')
+    def desconecta_bd(self):
+        self.conn.close(); print('Conectando ao banco de dados')
+    def montaTabelas(self):
+        self.conecta_bd(); print('Desconectando ao banco de dados')
+        ### Criar Tabela
+        self.cursor.execute("""     
+            CREATE TABLE IF NOT EXISTS clients ( 
+                cod INTEGER PRIMARY KEY,    
+                nome_cliente CHAR(40) NOT NULL,
+                telefone INTEGER(20),
+                cidade CHAR(40)
+                            
+                );
+            """)
+        self.conn.commit(); print("Banco de dados criado")
+        self.desconecta_bd()
 
 class Aplicativo(Funcs):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'
@@ -22,6 +41,7 @@ class Aplicativo(Funcs):
         self.widgets_frame_title()
         self.widgets_frame_1()
         self.lista_frame_2()
+        self.montaTabelas()
         root.mainloop()
 
     def tela(self):
