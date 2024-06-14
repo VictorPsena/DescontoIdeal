@@ -30,28 +30,28 @@ class Funcs():
             """)
         self.conn.commit(); print("Banco de dados criado")
         self.desconecta_bd()
-    def add_produtos(self):
-        self.bandeira = self.ent_bandeira.get()
-        self.db = self.ent_db.get()
-        self.par = self.ent_par.get()
-        self.val = self.ent_val.get()
-        self.quant = self.ent_quant.get()
+    # def add_cliente(self):
+    #     self.codigo = self.ent_bandeira.get()
+    #     self.nome = self.ent_db.get()
+    #     self.telefone = self.ent_par.get()
+    #     self.cidade = self.ent_val.get()
+    #     self.quant = self.ent_quant.get()
 
-        self.cursor.execute(""" INSERT INTO clientes (nome_clientes, telefone, cidade)
-                            VALUES (?, ?, ?) """, (self.bandeira, self.db, self.par))
-        self.conn.commit()
-        self.desconecta_bd()
-        self.select_lista()
-        self.limpa_tela()
+    #     self.cursor.execute(""" INSERT INTO clientes (nome_clientes, telefone, cidade)
+    #                         VALUES (?, ?, ?) """, (self.bandeira, self.db, self.par))
+    #     self.conn.commit()
+    #     self.desconecta_bd()
+    #     self.select_lista()
+    #     self.limpa_tela()
 
-    def select_lista(self):
-        self.ListaCli.delete(*self.ListaCli.get_children())
-        self.conecta_bd()
-        lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes    
-            ORDER BY nome_clientes ASC; """)
-        for i in lista:
-            self.ListaCli.insert("", END, values=i)
-        self.desconecta_bd()
+    # def select_lista(self):
+    #     self.ListaCli.delete(*self.ListaCli.get_children())
+    #     self.conecta_bd()
+    #     lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes    
+    #         ORDER BY nome_clientes ASC; """)
+    #     for i in lista:
+    #         self.ListaCli.insert("", END, values=i)
+    #     self.desconecta_bd()
 
         
         
@@ -68,7 +68,7 @@ class Aplicativo(Funcs):
         self.widgets_frame_1()
         self.lista_frame_2()
         self.montaTabelas()
-        self.select_lista()
+        #self.select_lista()
         root.mainloop()
 
     def tela(self):
@@ -114,7 +114,7 @@ class Aplicativo(Funcs):
 
          ###Criação do botão Cadastrar
         self.bt_cadastrar = Button(self.frame_title, text="Cadastrar", bd=2, bg='#107db4',  
-                                fg='White', font=('verdana', 8, 'bold'), command=self.add_produtos)
+                                fg='White', font=('verdana', 8, 'bold'))
         self.bt_cadastrar.place(relx= 0.6, rely=0.5, relheight=0.4)
 
         ### Criação da Label Title
@@ -167,10 +167,10 @@ class Aplicativo(Funcs):
     def lista_frame_2(self):
         self.ListaCli = ttk.Treeview(self.frame_2, height=3, columns=('clo1', 'clo2', 'clo3','col4'))
         self.ListaCli.heading('#0', text='')
-        self.ListaCli.heading('#1', text='Códdigo')
-        self.ListaCli.heading('#2', text='Teste')
-        self.ListaCli.heading('#3', text='Teste2')
-        self.ListaCli.heading('#4', text='Teste3')
+        self.ListaCli.heading('#1', text='Código')
+        self.ListaCli.heading('#2', text='Nome')
+        self.ListaCli.heading('#3', text='Telefone')
+        self.ListaCli.heading('#4', text='Cidade')
 
         self.ListaCli.column('#0', width=1)
         self.ListaCli.column('#1', width=50)
