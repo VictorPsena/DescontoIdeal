@@ -13,7 +13,7 @@ def Linhas(msg):
 def VerificaFloat(msg):
     while True:
         try:
-            x = float(input(msg))
+            x = float(msg)
         except (ValueError, TypeError):
             print('\033[31mERRO\033[m, Digite um valor válido')
             continue
@@ -24,7 +24,7 @@ def VerificaFloat(msg):
 def VerificaInt(num):
     while True:
         try:
-            n = int(input(num))
+            n = int(num)
         except (ValueError, TypeError):
             print('Erro, digite um valor inteiro')
             continue
@@ -37,7 +37,7 @@ def VerificaInt(num):
 ######################### Qual é a bandeira do cartão ########################################
 def VerficaBandeira(msg):
     while True:
-        n = str(input(msg)).lower().strip()
+        n = str(msg).lower().strip()
         sleep(1)
         if n == 'visa':
             Linhas('A Bandeira escolida é \033[32mVISA\033[m!')
@@ -62,7 +62,7 @@ def VerficaBandeira(msg):
 # 6 siginifica que a compra será efetuada no débito
 def DebCred(msg):
     while True:
-        n = str(input(msg)).upper().strip()[0] 
+        n = str(msg).upper().strip()[0] 
       
         if n =='C':
             x = 7
@@ -150,7 +150,7 @@ def TaxaBandeira(bandeira, parcelas, DebitoOuCredito):
 
 ############################### Quantos produtos #############################################
 def Quantidade(quant):
-    val = int(input(quant))
+    val = int(quant)
 
 
 
@@ -240,7 +240,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                 
             else:
                  print("O Valor do produto excede os valores cadastrados ")
-                 ValorCompra = int(input("Digite o valor da compra: "))
+                 #ValorCompra = int(input("Digite o valor da compra: "))
                  continue
 
 
@@ -310,13 +310,13 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                         return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
             else:
                  print("O Valor do produto excede os valores cadastrados ")
-                 ValorCompra = int(input("Digite o valor da compra: "))
+                 #ValorCompra = int(input("Digite o valor da compra: "))
                  continue
 
         else:
            print("\033[33mAlgum valor está errado\033[m")
-           ValorCompra = int(input("Digite o valor da compra: "))
-           bandeira = str(input("Informe a bandeira: ")).lower()
+           #ValorCompra = int(input("Digite o valor da compra: "))
+           #bandeira = str(input("Informe a bandeira: ")).lower()
            continue
 
 

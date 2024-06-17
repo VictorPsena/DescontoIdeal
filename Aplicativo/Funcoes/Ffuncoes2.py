@@ -56,23 +56,6 @@ class Funcs():
             """)
         self.conn.commit(); print("Banco de dados criado")
         self.desconecta_bd()
-    def bandeira(self):
-        band = self.ent_bandeira.get().lower().strip()
-        lista = ['elo', 'visa', 'mastercard', 'hipercard']
-        try:
-            lista.index(band)
-        except (ValueError, TypeError):
-            erro = Tk()
-            erro.geometry("270x100+710+253")
-            erro.title("ERRO")
-            erro.resizable(False, False)
-            texto = Label(erro, text="Digite uma bandeira válida. \n visa, mastercard, elo, hipercard",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
-            texto.place(x = 10, y =10, width= 250, height= 50)
-            Button(erro, text="OK", command= erro.destroy,font="Impact", justify=CENTER, foreground="green" ).place(x = 105, y=65, width=50, height= 30)
-        
-
-            erro.mainloop()
-        return band
     def dc(self):
         c = self.ent_dc.get().lower().strip()[0]
         lista1 = ['d', 'c']
@@ -90,6 +73,23 @@ class Funcs():
 
             erro.mainloop()
         return c
+    def bandeira(self):
+        band = self.ent_bandeira.get().lower().strip()
+        lista = ['elo', 'visa', 'mastercard', 'hipercard']
+        try:
+            lista.index(band)
+        except (ValueError, TypeError):
+            erro = Tk()
+            erro.geometry("270x100+710+253")
+            erro.title("ERRO")
+            erro.resizable(False, False)
+            texto = Label(erro, text="Digite uma bandeira válida. \n visa, mastercard, elo, hipercard",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
+            texto.place(x = 10, y =10, width= 250, height= 50)
+            Button(erro, text="OK", command= erro.destroy,font="Impact", justify=CENTER, foreground="green" ).place(x = 105, y=65, width=50, height= 30)
+        
+
+            erro.mainloop()
+        return band    
     def parcelas(self):
         p = self.ent_par.get()
         try:
@@ -166,7 +166,16 @@ class Funcs():
                 
                 erro.mainloop()
         #return v
-    
+    def widgets_frame_1_1(self):
+        debcred = self.dc()
+        taxa = TaxaBandeira(self.bandeira(), int(self.parcelas()), debcred)
+        lista = ldp(float(self.val_produto()), self.bandeira(), taxa)
+
+        label = Label(self.frame_1_1,   
+                      text= f'Lucro: R${lista[0]:.2f} \n Margem de lucro: {lista[1]:.2f}% \n Preço Ideal: R${lista[2]:.2f} \n  Desconto Máximo: R${lista[3]:.2f} \n Lucro mínimo: R${lista[4]:.2f} \n Tarifa da maquininha: R${lista[5]:.2f} \n Parcelas: R${lista[2]/int(self.ent_par.get()):.2f}',    
+                      bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
+        label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
+
 
 
 class Aplicativo(Funcs):
@@ -178,11 +187,6 @@ class Aplicativo(Funcs):
         self.frames()
         self.widgets_frame_title()
         self.widgets_frame_1()
-        # self.bandeira()
-        # self.dc()
-        # self.parcelas()
-        # #self.widgets_frame_1_1()
-        #self.select_lista()
         root.mainloop()
     def tela(self):
         self.root.title("Calcular o Desconto")
@@ -270,23 +274,10 @@ class Aplicativo(Funcs):
         self.ent_quant = Entry(self.frame_1, bg = 'White', font=('verdana', 8, 'bold'), fg='#107db2')
         self.ent_quant.place(relx=0.55, rely=0.2, relwidth=0.4, relheight=0.1)
 
-        ### Criação do botão enviar
+        ### Criação do botão enviar 
         self.bt_enviar = Button(self.frame_1, text='Enviar', bd=2, bg='#107db4',  
-                                fg='White', font=('verdana', 8, 'bold'))
-        self.bt_enviar.place(relx= 0.85, rely=0.8, relheight=0.1)   
-    # def widgets_frame_1_1(self):
-    #     debcred = DebCred(self.dc())
-    #     taxa = TaxaBandeira(self.bandeira(), int(self.parcelas()), debcred)
-    #     lista = ldp(float(self.val_produto()), self.bandeira(), taxa)
-
-        # label = Label(self.frame_1_1,   
-        #               text= f'Lucro: R${lista[0]:.2f} \n    
-        #               Margem de lucro: {lista[1]:.2f}% \n Preço Ideal: R${lista[2]:.2f} \n    
-        #               Desconto Máximo: R${lista[3]:.2f} \n Lucro mínimo: R${lista[4]:.2f} \n    
-        #               Tarifa da maquininha: R${lista[5]:.2f} \n     
-        #               Parcelas: R${lista[2]/int(self.ent_par.get()):.2f}',    
-        #               bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
-        # label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
+                                fg='White', font=('verdana', 8, 'bold'), command=self.widgets_frame_1_1)
+        self.bt_enviar.place(relx= 0.85, rely=0.8, relheight=0.1)         
     def lista_frame_2(self):
         self.ListaCli = ttk.Treeview(self.frame_2, height=3, columns=('clo1', 'clo2', 'clo3','col4'))
         self.ListaCli.heading('#0', text='')
