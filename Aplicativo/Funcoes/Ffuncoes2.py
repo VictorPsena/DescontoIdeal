@@ -178,10 +178,10 @@ class Aplicativo(Funcs):
         self.frames()
         self.widgets_frame_title()
         self.widgets_frame_1()
-        self.lista_frame_2()
-        self.montaTabelas()
-        self.bandeira()
-        self.dc()
+        # self.bandeira()
+        # self.dc()
+        # self.parcelas()
+        # #self.widgets_frame_1_1()
         #self.select_lista()
         root.mainloop()
     def tela(self):
@@ -273,7 +273,20 @@ class Aplicativo(Funcs):
         ### Criação do botão enviar
         self.bt_enviar = Button(self.frame_1, text='Enviar', bd=2, bg='#107db4',  
                                 fg='White', font=('verdana', 8, 'bold'))
-        self.bt_enviar.place(relx= 0.85, rely=0.8, relheight=0.1)
+        self.bt_enviar.place(relx= 0.85, rely=0.8, relheight=0.1)   
+    # def widgets_frame_1_1(self):
+    #     debcred = DebCred(self.dc())
+    #     taxa = TaxaBandeira(self.bandeira(), int(self.parcelas()), debcred)
+    #     lista = ldp(float(self.val_produto()), self.bandeira(), taxa)
+
+        # label = Label(self.frame_1_1,   
+        #               text= f'Lucro: R${lista[0]:.2f} \n    
+        #               Margem de lucro: {lista[1]:.2f}% \n Preço Ideal: R${lista[2]:.2f} \n    
+        #               Desconto Máximo: R${lista[3]:.2f} \n Lucro mínimo: R${lista[4]:.2f} \n    
+        #               Tarifa da maquininha: R${lista[5]:.2f} \n     
+        #               Parcelas: R${lista[2]/int(self.ent_par.get()):.2f}',    
+        #               bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
+        # label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
     def lista_frame_2(self):
         self.ListaCli = ttk.Treeview(self.frame_2, height=3, columns=('clo1', 'clo2', 'clo3','col4'))
         self.ListaCli.heading('#0', text='')
@@ -293,20 +306,6 @@ class Aplicativo(Funcs):
         self.scrolLista = Scrollbar(self.frame_2, orient='vertical')
         self.ListaCli.configure(yscroll=self.scrolLista.set)
         self.scrolLista.place(relx=0.96, rely=0.1, relwidth=0.02, relheight=0.85)
-    def widgets_frame_1_1(self):
-        debcred = DebCred(self.dc())
-        taxa = TaxaBandeira(self.bandeira(), int(self.parcelas()), debcred)
-        lista = ldp(float(self.val_produto()), self.bandeira(), taxa)
-
-        label = Label(self.frame_1_1,   
-                      text= f'Lucro: R${lista[0]:.2f} \n    
-                      Margem de lucro: {lista[1]:.2f}% \n Preço Ideal: R${lista[2]:.2f} \n    
-                      Desconto Máximo: R${lista[3]:.2f} \n Lucro mínimo: R${lista[4]:.2f} \n    
-                      Tarifa da maquininha: R${lista[5]:.2f} \n     
-                      Parcelas: R${lista[2]/int(self.ent_par.get()):.2f}',    
-                      bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
-        label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
-
 
 
 
