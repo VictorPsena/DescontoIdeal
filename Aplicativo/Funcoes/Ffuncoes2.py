@@ -1,7 +1,7 @@
 from tkinter import*
 from tkinter import ttk
 import sqlite3
-
+from Ffuncoes import *
 root = Tk()
 
 class Funcs():
@@ -30,39 +30,39 @@ class Funcs():
             """)
         self.conn.commit(); print("Banco de dados criado")
         self.desconecta_bd()
-    def TaxaBandeira(self, bandeira, parcelas, DebitoOuCredito):
-        self.taxa = 0
-        self.listaCreditoVM = [0.0369, 0.0599, 0.0629, 0.0715, 0.0799, 0.0879, 0.0959, 0.1039,  0.1119, 0.1199, 0.1279, 0.1349]
-        self.listaDebitoVM = 0.0179
+    # def TaxaBandeira(self, bandeira, parcelas, DebitoOuCredito):
+    #     self.taxa = 0
+    #     self.listaCreditoVM = [0.0369, 0.0599, 0.0629, 0.0715, 0.0799, 0.0879, 0.0959, 0.1039,  0.1119, 0.1199, 0.1279, 0.1349]
+    #     self.listaDebitoVM = 0.0179
         
-        self.listaCreditoEH = [0.0488, 0.0738, 0.0768, 0.0854, 0.0938, 0.1018, 0.1098, 0.1178, 0.1258,  0.1338, 0.1418, 0.1488]
-        self.listaDebitoEH = 0.0298
-        while True:
-            if bandeira == 'v' or bandeira == 'm':
-                if DebitoOuCredito == 7:
-                    for i in range(len(self.listaCreditoVM)):
-                        if parcelas - 1 == i:
-                            self.taxa = self.listaCreditoVM[i]
-                            return self.taxa
-                        else:
-                            break
-                elif self.DebitoOuCredito == 6: # Será que tenho que adicionar um 'and parcelas = 1'?
-                    self.taxa = self.listaDebitoVM
-                    return self.taxa
+    #     self.listaCreditoEH = [0.0488, 0.0738, 0.0768, 0.0854, 0.0938, 0.1018, 0.1098, 0.1178, 0.1258,  0.1338, 0.1418, 0.1488]
+    #     self.listaDebitoEH = 0.0298
+    #     while True:
+    #         if bandeira == 'v' or bandeira == 'm':
+    #             if DebitoOuCredito == 'c':
+    #                 for i in range(len(self.listaCreditoVM)):
+    #                     if parcelas - 1 == i:
+    #                         self.taxa = self.listaCreditoVM[i]
+    #                         return self.taxa
+    #                     else:
+    #                         break
+    #             elif self.DebitoOuCredito == 'd': # Será que tenho que adicionar um 'and parcelas = 1'?
+    #                 self.taxa = self.listaDebitoVM
+    #                 return self.taxa
 
-            elif bandeira == 'e' or bandeira == 'h':
-                if DebitoOuCredito == 7:
-                    for i in range(len(self.listaCreditoEH)):
-                        if parcelas - 1 == i:
-                            self.taxa = self.listaCreditoEH[i]
-                            return self.taxa
-                        else:
-                            break
-                elif DebitoOuCredito == 6:
-                    self.taxa = self.listaDebitoEH
-                    return self.taxa
-            break
-    def ldp(self, ValorCompra,  bandeira, TaxaCartao):
+    #         elif bandeira == 'e' or bandeira == 'h':
+    #             if DebitoOuCredito == 'c':
+    #                 for i in range(len(self.listaCreditoEH)):
+    #                     if parcelas - 1 == i:
+    #                         self.taxa = self.listaCreditoEH[i]
+    #                         return self.taxa
+    #                     else:
+    #                         break
+    #             elif DebitoOuCredito == 'd':
+    #                 self.taxa = self.listaDebitoEH
+    #                 return self.taxa
+    #         break
+    # def ldp(self, ValorCompra,  bandeira, TaxaCartao):
         self.Lucro_Liq = 0
         self.Lucro_marg = 0
         self.desconMax = 0
@@ -182,7 +182,6 @@ class Funcs():
                         return 1
                     else:
                         return [self.Lucro_Liq, self.Lucro_marg*100, self.Val_Vend, self.desconMax, self.lucromin, self.taxamaquina ]
-   
     def dc(self):
         self.c = self.ent_dc.get().lower().strip()[0]
         self.lista1 = ['d', 'c']
@@ -290,15 +289,19 @@ class Funcs():
         self.bandeiraa = self.bandeira()
         self.parcellas = self.parcelas()
         self.valProduto = self.val_produto()
-        self.taxa = self.TaxaBandeira(self.bandeiraa, int(self.parcellas), self.debcred)
-        self.lista = self.ldp(self.valProduto, self.bandeiraa, self.taxa)
+        # print(self.debcred)
+        # print(self.bandeiraa)
+        # print(self.parcellas)
+        # print(self.valProduto)
+        self.taxa = TaxaBandeira(str(self.bandeiraa), self.parcellas, self.debcred)
+        # print(self.taxa)
+        self.lista = ldp(float(self.valProduto), self.bandeiraa, self.taxa)
+        #print(self.lista)
 
         self.label = Label(self.frame_1_1,   
                       text= f'Lucro: R${self.lista[0]:.2f} \n Margem de lucro: {self.lista[1]:.2f}% \n Preço Ideal: R${self.lista[2]:.2f} \n  Desconto Máximo: R${self.lista[3]:.2f} \n Lucro mínimo: R${self.lista[4]:.2f} \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
-
-
 
 class Aplicativo(Funcs):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'

@@ -1,101 +1,4 @@
-########## FUNÇÕES QUE VOU UTILIZAR PARA CRIAR O APLICATIVO ##################################
-from time import sleep
-
-def Linhas2(tam = 29):
-    print(tam*'=+')
-
-def Linhas(msg):
-    print('='*42)
-    print(msg.center(42))
-    print('='*42)
-
-############################## verfica se o num é int ou float ###############################
-def VerificaFloat(msg):
-    while True:
-        try:
-            x = float(msg)
-        except (ValueError, TypeError):
-            print('\033[31mERRO\033[m, Digite um valor válido')
-            continue
-        else:
-            return x
-
-
-def VerificaInt(num):
-    while True:
-        try:
-            n = int(num)
-        except (ValueError, TypeError):
-            print('Erro, digite um valor inteiro')
-            continue
-        else:
-            return n
-
-##############################################################################################
-
-
-######################### Qual é a bandeira do cartão ########################################
-def VerficaBandeira(msg):
-    while True:
-        n = str(msg).lower().strip()
-        sleep(1)
-        if n == 'visa':
-            Linhas('A Bandeira escolida é \033[32mVISA\033[m!')
-            return n
-        elif n == 'mastercard':
-            Linhas('A Bandeira escolida é \033[33mMASTERCARD\033[m!')
-            return n
-        elif n == 'elo':
-            Linhas('A Bandeira escolida é \033[34mELO\033[m!')
-            return n
-        elif n == 'hipercard':
-            Linhas('A Bandeira escolida é \033[33mHIPERCARD\033[m!')
-            return n
-        else:
-            print('Bandeira do cartão não cadastrada.')
-            continue
-##############################################################################################
-
-
-############################### Débito ou crédito ###########################################
-# 7 siginifica que a compra será efetuada no crédito 
-# 6 siginifica que a compra será efetuada no débito
-def DebCred(msg):
-    while True:
-        n = str(msg).upper().strip()[0] 
-      
-        if n =='C':
-            x = 7
-            return x
-        elif n =='D':
-            x = 6
-            return x
-        else:
-            print('\033[31mOpção inválida\033[m, escolha entre crédito ou débito.')
-            continue
-
-# x = DebCred("Escolha: ")
-# print(x)
-##############################################################################################
-
-
-#########################    Quantidade de parcelas ##########################################
-def QuantidadeParcelas(msg):
-    while True: 
-        x = VerificaInt(msg)
-        if 1 <= x <= 12:
-            return x
-        else:
-            print("O máximo que conseguimos parcelar é 12 vezes.")
-            continue
-
-# x = QuantidadeParcelas("Quantidade de parcelas: ")
-# print(x)
-
-##############################################################################################
-
-
-############ Mostra as taxas da bandeira escolida 2.0 tendo o número de parcelas #############
+# Aqui, vou colocar todas as funções que utilizarei no para gerar o aplicativo
 
 def TaxaBandeira(bandeira, parcelas, DebitoOuCredito):
     # band = str(bandeira)
@@ -108,65 +11,29 @@ def TaxaBandeira(bandeira, parcelas, DebitoOuCredito):
     listaCreditoEH = [0.0488, 0.0738, 0.0768, 0.0854, 0.0938, 0.1018, 0.1098, 0.1178, 0.1258,  0.1338, 0.1418, 0.1488]
     listaDebitoEH = 0.0298
     while True:
-        if bandeira == 'visa' or bandeira == 'mastercard':
-            if DebitoOuCredito == 7:
+        if bandeira == 'v' or bandeira == 'm':
+            if DebitoOuCredito == 'c':
                 for i in range(len(listaCreditoVM)):
                     if parcelas - 1 == i:
                         taxa = listaCreditoVM[i]
                         return taxa
                     else:
                         continue
-            elif DebitoOuCredito == 6: # Será que tenho que adicionar um 'and parcelas = 1'?
+            elif DebitoOuCredito == 'd': # Será que tenho que adicionar um 'and parcelas = 1'?
                 taxa = listaDebitoVM
                 return taxa
-            else:
-                print("opção inválida")
-                DebitoOuCredito = DebCred("Escolha entre Débito ou Crédito: ")
-                continue
-        elif bandeira == 'elo' or bandeira == 'hipercard':
-            if DebitoOuCredito == 7:
+        elif bandeira == 'e' or bandeira == 'h':
+            if DebitoOuCredito == 'c':
                 for i in range(len(listaCreditoEH)):
                     if parcelas - 1 == i:
                         taxa = listaCreditoEH[i]
                         return taxa
                     else:
                         continue
-            elif DebitoOuCredito == 6:
+            elif DebitoOuCredito == 'd':
                 taxa = listaDebitoEH
                 return taxa
-            else:
-                print("opção inválida")
-                DebitoOuCredito = DebCred("Escolha entre Débito ou Crédito: ")
-                continue
-
-
-
-#x = TaxaBandeira('elo', 2, 7)
-
-#print(x)
-
-##############################################################################################
-
-
-############################### Quantos produtos #############################################
-def Quantidade(quant):
-    val = int(quant)
-
-
-
-##############################################################################################
-
-
-
-
-
-############### Calcula o preço que o vendedor pode colocar no produto #######################
-
-# Para definirmos nosso valor ideal do preço do produto temos que saber como a nossa loja funciona e com qual frequência o produto está sendo vendido, se estiver sendo muito vendido, podemos aumenter a nossa margem de lucro, se não, diminuir, se for muito dificil de produzir, podemos aumentar, e assim por diante. Temos vários fatores que acarretam na variação do lucro, mas, digamos que podemos definir uma margem de lucro depedendo do preço do produto, por exemplo, se o produto custa entre 0 < custo < 500 a margem de lucro é de 10% em cima do valor do produto, caso o valor aumente, eu posso diminuir a porcentagem, entretanto o lucro será maior.
-
-# essa função calcula o lucro, desconto máximo e preço ideal para o produto ser vendido 
-
-
+        break
 def ldp(ValorCompra,  bandeira, TaxaCartao):
     Lucro_Liq = 0
     Lucro_marg = 0
@@ -175,7 +42,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
 
     while True:
         listapreco = [0.0369, 0.0599, 0.0629, 0.0715, 0.0799, 0.0879, 0.0959, 0.1039,  0.1119, 0.1199, 0.1279, 0.1349, 0.0488, 0.0738, 0.0768, 0.0854, 0.0938, 0.1018, 0.1098, 0.1178, 0.1258,  0.1338, 0.1418, 0.1488]
-        if bandeira == 'visa' or bandeira == 'mastercard':
+        if bandeira == 'v' or bandeira == 'm':
             
             if  0 < ValorCompra < 500: #grupo 1
                  taxa = 0.12 # em cada if a única coisa que muda é a taxa 
@@ -238,15 +105,8 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  else:
                     return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
                 
-            else:
-                 print("O Valor do produto excede os valores cadastrados ")
-                 #ValorCompra = int(input("Digite o valor da compra: "))
-                 continue
 
-
-        # Agora vamos fazer para as bandeira 'elo' e 'hipercard'
-
-        elif bandeira == 'elo' or bandeira == 'hipercard':
+        elif bandeira == 'e' or bandeira == 'h':
             if 0 < ValorCompra < 500:
                     taxa = 0.12
                     for i in listapreco:
@@ -308,21 +168,8 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
 
                     else:
                         return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
-            else:
-                 print("O Valor do produto excede os valores cadastrados ")
-                 #ValorCompra = int(input("Digite o valor da compra: "))
-                 continue
 
-        else:
-           print("\033[33mAlgum valor está errado\033[m")
-           #ValorCompra = int(input("Digite o valor da compra: "))
-           #bandeira = str(input("Informe a bandeira: ")).lower()
-           continue
+        break
 
-
-# opcao = 7
-# taxa = TaxaBandeira('visa', 12, opcao )
-# print(taxa)
-# lista =ldp(200, 'visa', taxa )
-# print(lista)
-###############################################################################################
+#print(ldp(1000, 'e', 0.0629))
+#print(TaxaBandeira('e', 12, 'c'))
