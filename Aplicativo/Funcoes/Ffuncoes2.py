@@ -299,9 +299,9 @@ class Funcs():
         self.lista = ldp(float(self.valProduto), self.bandeiraa, self.taxa)
         #print(self.lista)
 
-        self.label = Label(self.frame_1_1,   
+        self.label = customtkinter.CTkLabel(self.frame_1_1,   
                       text= f'Lucro: R${self.lista[0]:.2f} \n Margem de lucro: {self.lista[1]:.2f}% \n Preço Ideal: R${self.lista[2]:.2f} \n  Desconto Máximo: R${self.lista[3]:.2f} \n Lucro mínimo: R${self.lista[4]:.2f} \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
-                      bg ="#48D1CC", border= 5, foreground="#fff", font="ArialBlack")
+                      font=('verdana', 20), text_color='#107db2')
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
 
 class Aplicativo(Funcs):
@@ -324,23 +324,23 @@ class Aplicativo(Funcs):
         self.root.minsize(width=1050,height=700)
         self.root._set_appearance_mode('system')   
     def frames(self):
-        self.frame_title = customtkinter.CTkFrame(self.root, fg_color='lightgray',    
-                          )
+        self.frame_title = customtkinter.CTkFrame(self.root, fg_color='lightgray')
         self.frame_title.place(relx=0.58, rely=0.02, relwidth=0.4, 
                            relheight=0.10)
         ###############################################################################
-        self.frame_1 = Frame(self.root, bd= 2, bg = 'White',    
-                            highlightbackground='lightblue', highlightthickness=2)
+        self.frame_1 = customtkinter.CTkFrame(self.root, fg_color = 'lightgray',    
+                            #highlightbackground='lightblue', highlightthickness=2
+                            )
         self.frame_1.place(relx=0.02, rely=0.02, relwidth=0.55, 
                            relheight=0.46)
         ###############################################################################
-        self.frame_1_1 = Frame(self.root, bd= 2, bg = 'White',    
-                            highlightbackground='lightblue', highlightthickness=2)
+        self.frame_1_1 = customtkinter.CTkFrame(self.root, fg_color = 'lightgray',    
+                            #highlightbackground='lightblue', highlightthickness=2
+                            )
         self.frame_1_1.place(relx=0.58, rely=0.14, relwidth=0.40, 
                            relheight=0.34)
         ###############################################################################
-        self.frame_2 = Frame(self.root, bd= 2, bg = 'White',    
-                            highlightbackground='lightblue', highlightthickness=2)
+        self.frame_2 = customtkinter.CTkFrame(self.root, fg_color = 'lightgray')
         self.frame_2.place(relx=0.02, rely=0.5, relwidth=0.96, 
                            relheight=0.46)
         ###############################################################################        
@@ -353,7 +353,7 @@ class Aplicativo(Funcs):
         ###Criação do botão buscar
         self.bt_config = customtkinter.CTkButton(self.frame_title, text="Config",    
                                 font=('verdana', 10, 'bold'))
-        self.bt_config.place(relx= 0.30, rely=0.5, relheight=0.4, relwidth = 0.2)
+        self.bt_config.place(relx= 0.32, rely=0.5, relheight=0.4, relwidth = 0.2)
 
          ###Criação do botão Cadastrar
         self.bt_cadastrar = customtkinter.CTkButton(self.frame_title, text="Cadastrar",  
@@ -363,48 +363,48 @@ class Aplicativo(Funcs):
 
         ### Criação da Label Title
         self.lb_title = Label(self.frame_title, text="Análise de Descontos", bg = 'lightgray',  
-                              font=('verdana', 10, 'bold'), fg='#107db2')
-        self.lb_title.place(relx=0.1, rely=0.1)    
+                              font=('verdana', 14, 'bold'), fg='#107db2')
+        self.lb_title.place(relx=0.1, rely=0.08)    
     def widgets_frame_1(self):
 
         ### Criação da Label Title
-        self.lb_bandeira = Label(self.frame_1, text="Qual é a bandeira do cartão?",     
-                                 bg = 'White', font=('verdana', 9), fg='#107db2')
-        self.lb_bandeira.place(relx = 0.03, rely=0.08, relwidth=0.5)
+        self.lb_bandeira = customtkinter.CTkLabel(self.frame_1, text="Qual é a bandeira do cartão?",     
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_bandeira.place(relx = 0.03, rely=0.12, relwidth=0.5)
 
-        self.ent_bandeira = customtkinter.CTkEntry(self.frame_1, font=('verdana', 8, 'bold'))
+        self.ent_bandeira = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_bandeira.place(relx=0.03, rely=0.2, relwidth=0.5, relheight=0.1)
         ###############################################################################
-        self.lb_dc = Label(self.frame_1, text="Vai ser no Crédito ou no Débito?",     
-                                 bg = 'White', font=('verdana', 9), fg='#107db2')
-        self.lb_dc.place(relx = 0.03, rely=0.3, relwidth=0.5)
+        self.lb_dc = customtkinter.CTkLabel(self.frame_1, text="Vai ser no Crédito ou no Débito?",     
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_dc.place(relx = 0.03, rely=0.32, relwidth=0.5)
 
-        self.ent_dc = customtkinter.CTkEntry(self.frame_1, font=('verdana', 8, 'bold'))
+        self.ent_dc = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_dc.place(relx=0.03, rely=0.4, relwidth=0.5, relheight=0.1)
         ###############################################################################
         self.lb_par = customtkinter.CTkLabel(self.frame_1, text="Quantas Parcelas?",     
-                                  font=('verdana', 12), text_color='#107db2')
-        self.lb_par.place(relx = 0.03, rely=0.5, relwidth=0.5)
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_par.place(relx = 0.03, rely=0.52, relwidth=0.5)
 
-        self.ent_par = customtkinter.CTkEntry(self.frame_1, bg_color = 'White', font=('verdana', 8, 'bold'), fg_color='#107db2')
+        self.ent_par = customtkinter.CTkEntry(self.frame_1, bg_color = 'White', font=('verdana', 14, 'bold'))
         self.ent_par.place(relx=0.03, rely=0.6, relwidth=0.5, relheight=0.1)
         ###############################################################################
-        self.lb_val = Label(self.frame_1, text="Valor do produto?",     
-                                 bg = 'White', font=('verdana', 9), fg='#107db2')
-        self.lb_val.place(relx = 0.03, rely=0.7, relwidth=0.5)
+        self.lb_val = customtkinter.CTkLabel(self.frame_1, text="Valor do produto?",     
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_val.place(relx = 0.03, rely=0.72, relwidth=0.5)
 
-        self.ent_val = customtkinter.CTkEntry(self.frame_1, font=('verdana', 8, 'bold'))
+        self.ent_val = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_val.place(relx=0.03, rely=0.8, relwidth=0.5, relheight=0.1)
         ###############################################################################
-        self.lb_quant = Label(self.frame_1, text="Quantidade do mesmo produto?",     
-                                 bg = 'White', font=('verdana', 9), fg='#107db2')
-        self.lb_quant.place(relx = 0.5, rely=0.08, relwidth=0.5)
+        self.lb_quant = customtkinter.CTkLabel(self.frame_1, text="Quantidade do mesmo produto?",     
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_quant.place(relx = 0.55, rely=0.12, relwidth=0.4)
 
-        self.ent_quant = customtkinter.CTkEntry(self.frame_1, font=('verdana', 8, 'bold'))
+        self.ent_quant = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_quant.place(relx=0.55, rely=0.2, relwidth=0.4, relheight=0.1)
 
         ### Criação do botão enviar 
-        self.bt_enviar = customtkinter.CTkButton(self.frame_1, text='Enviar', font=('verdana', 10, 'bold'), command=self.widgets_frame_1_1)
+        self.bt_enviar = customtkinter.CTkButton(self.frame_1, text='Enviar', font=('verdana', 14, 'bold'), command=self.widgets_frame_1_1)
         self.bt_enviar.place(relx= 0.65, rely=0.8, relheight=0.1)         
     def lista_frame_2(self):
         self.ListaCli = ttk.Treeview(self.frame_2, height=3, columns=('clo1', 'clo2', 'clo3','col4'))
