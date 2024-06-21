@@ -21,7 +21,7 @@ class Funcs():
         self.conecta_bd(); print('Conectando ao banco de dados')
         ### Criar Tabela
         self.cursor.execute("""     
-            CREATE TABLE IF NOT EXISTS clients ( 
+            CREATE TABLE IF NOT EXISTS clientes ( 
                 cod INTEGER PRIMARY KEY,    
                 nome_produto CHAR(50) NOT NULL,
                 preço INTEGER(20),
@@ -30,6 +30,26 @@ class Funcs():
                 );
             """)
         self.conn.commit(); print("Banco de dados criado")
+        self.desconecta_bd()
+    def add_produtos(self):
+        self.entBandeira = self.ent_bandeira.get()
+        self.db = self.ent_dc.get()
+        self.desconto = self.ent_par.get()
+        self.preço = self.ent_val.get()
+        self.conecta_bd()
+
+        self.cursor.execute(""" INSERT INTO clientes (nome_produto, preço, desconto)
+                            VALUES(?,?,?)""",(self.entBandeira, self.preço, self.desconto))
+        self.conn.commit()
+        self.desconecta_bd()
+        self.select_cadastrar()
+    def select_cadastrar(self):
+        self.ListaCli.delete(*self.ListaCli.get_children())
+        self.conecta_bd()
+        lista = self.cursor.execute(""" SELECT cod, nome_produto, preço, desconto FROM clientes
+                                    ORDER BY nome_produto ASC; """) #ASC ordem crescente DES decrescente
+        for i in lista:
+            self.ListaCli.insert("", END, values =i)
         self.desconecta_bd()
     def dc(self):
         self.c = self.ent_dc.get().lower().strip()[0]
@@ -163,6 +183,7 @@ class Aplicativo(Funcs):
         self.widgets_frame_1()
         self.lista_frame_2()
         self.montaTabelas()
+        self.select_cadastrar()
         root.mainloop()
     def tela(self):
         self.root.title("Calcular o Desconto")
@@ -207,7 +228,7 @@ class Aplicativo(Funcs):
          ###Criação do botão Cadastrar
         self.bt_cadastrar = customtkinter.CTkButton(self.frame_title, text="Cadastrar",  
                                #fg_color='White',   
-                                font=('verdana',10, 'bold'))
+                                font=('verdana',10, 'bold'), command=self.add_produtos)
         self.bt_cadastrar.place(relx= 0.6, rely=0.5, relheight=0.4)
 
         ### Criação da Label Title
