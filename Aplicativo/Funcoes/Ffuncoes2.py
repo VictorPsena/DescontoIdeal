@@ -7,11 +7,13 @@ root = customtkinter.CTk()
 
 class Funcs():
     def limpa_tela(self):
+        self.ent_codigo.delete(0, END)
         self.ent_bandeira.delete(0, END)
         self.ent_dc.delete(0, END)
         self.ent_par.delete(0, END)
         self.ent_val.delete(0, END)
         self.ent_quant.delete(0, END)
+        self.ent_nome.delete(0, END)
     def conecta_bd(self):
         self.conn = sqlite3.connect('clientes.bd')
         self.cursor = self.conn.cursor(); 
@@ -31,15 +33,17 @@ class Funcs():
             """)
         self.conn.commit(); print("Banco de dados criado")
         self.desconecta_bd()
-    def add_produtos(self):
-        self.entBandeira = self.ent_bandeira.get()
-        self.db = self.ent_dc.get()
+    def variaveis(self):
+        self.codigo = self.ent_codigo.get()
+        self.entnome = self.ent_nome.get()
         self.desconto = self.ent_par.get()
         self.preço = self.ent_val.get()
+    def add_produtos(self):
+        self.variaveis()
         self.conecta_bd()
 
         self.cursor.execute(""" INSERT INTO clientes (nome_produto, preço, desconto)
-                            VALUES(?,?,?)""",(self.entBandeira, self.preço, self.desconto))
+                            VALUES(?,?,?)""",(self.entnome, self.preço, self.desconto))
         self.conn.commit()
         self.desconecta_bd()
         self.select_cadastrar()
@@ -158,19 +162,32 @@ class Funcs():
         self.bandeiraa = self.bandeira()
         self.parcellas = self.parcelas()
         self.valProduto = self.val_produto()
-        # print(self.debcred)
-        # print(self.bandeiraa)
-        # print(self.parcellas)
-        # print(self.valProduto)
         self.taxa = TaxaBandeira(str(self.bandeiraa), self.parcellas, self.debcred)
-        # print(self.taxa)
         self.lista = ldp(float(self.valProduto), self.bandeiraa, self.taxa)
-        #print(self.lista)
-
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
                       text= f'Lucro: R${self.lista[0]:.2f} \n Margem de lucro: {self.lista[1]:.2f}% \n Preço Ideal: R${self.lista[2]:.2f} \n  Desconto Máximo: R${self.lista[3]:.2f} \n Lucro mínimo: R${self.lista[4]:.2f} \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       font=('verdana', 20), text_color='#107db2')
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
+    def DuploClicLista(self, event):
+        self.limpa_tela()
+        self.ListaCli.selection()
+
+        for n in self.ListaCli.selection():
+            col1, col2, col3, col4 = self.ListaCli.item(n, 'values')
+            self.ent_codigo.insert(END, col1)
+            self.ent_nome.insert(END, col2)
+            self.ent_val.insert(END, col3)
+            self.ent_par.insert(END, col4)
+    def deleta_produto(self):
+        self.variaveis()
+        self.conecta_bd()
+        self.cursor.execute("""DELETE FROM clientes WHERE cod = ? """, (self.codigo))
+        self.conn.commit()
+        self.desconecta_bd()
+        self.limpa_tela()
+        self.select_cadastrar()   
+
+
 
 class Aplicativo(Funcs):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'
@@ -222,7 +239,7 @@ class Aplicativo(Funcs):
 
         ###Criação do botão buscar
         self.bt_config = customtkinter.CTkButton(self.frame_title, text="Config",    
-                                font=('verdana', 10, 'bold'))
+                                font=('verdana', 10, 'bold'), command= self.deleta_produto)
         self.bt_config.place(relx= 0.32, rely=0.5, relheight=0.4, relwidth = 0.2)
 
          ###Criação do botão Cadastrar
@@ -244,6 +261,13 @@ class Aplicativo(Funcs):
 
         self.ent_bandeira = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_bandeira.place(relx=0.03, rely=0.2, relwidth=0.5, relheight=0.1)
+        ###############################################################################
+        self.lb_codigo = customtkinter.CTkLabel(self.frame_1, text="Código",     
+                                  font=('verdana', 14), text_color='#107db2')
+        self.lb_codigo.place(relx = 0.02, rely=0.01, relwidth=0.1)   
+        self.ent_codigo = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'),    
+                                                  fg_color="White", text_color="Black")
+        self.ent_codigo.place(relx=0.03, rely=0.08, relwidth=0.08, relheight=0.06)
         ###############################################################################
         self.lb_dc = customtkinter.CTkLabel(self.frame_1, text="Vai ser no Crédito ou no Débito?",     
                                   font=('verdana', 14), text_color='#107db2')
@@ -272,7 +296,12 @@ class Aplicativo(Funcs):
 
         self.ent_quant = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_quant.place(relx=0.55, rely=0.2, relwidth=0.4, relheight=0.1)
-
+        ###############################################################################
+        self.lb_nome = customtkinter.CTkLabel(self.frame_1, text="Nome do produto",     
+                        font=('verdana', 14), text_color='#107db2')
+        self.lb_nome.place(relx = 0.55, rely=0.32, relwidth=0.4)
+        self.ent_nome = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
+        self.ent_nome.place(relx=0.55, rely=0.4, relwidth=0.4, relheight=0.1)
         ### Criação do botão enviar 
         self.bt_enviar = customtkinter.CTkButton(self.frame_1, text='Enviar', font=('verdana', 14, 'bold'), command=self.widgets_frame_1_1)
         self.bt_enviar.place(relx= 0.65, rely=0.8, relheight=0.1)         
@@ -295,7 +324,7 @@ class Aplicativo(Funcs):
         self.scrolLista = Scrollbar(self.frame_2, orient='vertical')
         self.ListaCli.configure(yscroll=self.scrolLista.set)
         self.scrolLista.place(relx=0.96, rely=0.1, relwidth=0.02, relheight=0.85)
-
+        self.ListaCli.bind("<Double-1>", self.DuploClicLista)
 
 
 
