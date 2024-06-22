@@ -187,9 +187,47 @@ class Funcs():
         self.limpa_tela()
         self.select_cadastrar()   
 
+class Funcs2():
+    def Cadastro(self):
+        self.cadastro = customtkinter.CTkToplevel(self.root)
+        self.TelaNova()
+        self.frames()
+        self.widgets()
+        
+
+    def TelaNova(self):
+        self.cadastro.title("Cadastro de Produto")
+        self.cadastro.configure(background='#1e3743')
+        self.cadastro.geometry('800x720')
+        self.cadastro.resizable(True, True)
+        self.cadastro.maxsize(width=900, height=800)
+        self.cadastro.minsize(width=600,height=500)
+    def frames(self):
+        self.telaframe = customtkinter.CTkFrame(self.cadastro, fg_color='lightgray')
+        self.telaframe.place(relx=0.1, rely=0.1, relwidth=0.99, 
+                           relheight=0.99)
+
+    def widgets(self):
+        ###############################################################################
+        self.lb1_nome = customtkinter.CTkLabel(self.telaframe, text="Nome do produto",     
+                        font=('verdana', 14), text_color='#107db2')
+        self.lb1_nome.place(relx = 0.02, rely=0.02, relwidth=0.4)
+        self.ent1_nome = customtkinter.CTkEntry(self.telaframe, font=('verdana', 14, 'bold'))
+        self.ent1_nome.place(relx=0.02, rely=0.14, relwidth=0.3, relheight=0.03)
+        
 
 
-class Aplicativo(Funcs):
+
+
+
+
+
+        ## Botão Fechar
+        self.close_button = customtkinter.CTkButton(self.cadastro, text="Fechar", command=self.cadastro.destroy)
+        self.close_button.pack(pady=10)
+        self.close_button.place(relx = 0.4, rely = 0.9)
+
+class Aplicativo(Funcs, Funcs2):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'
     # Abre a tela principal do Aplivativo
     def __init__(self):
@@ -245,7 +283,7 @@ class Aplicativo(Funcs):
          ###Criação do botão Cadastrar
         self.bt_cadastrar = customtkinter.CTkButton(self.frame_title, text="Cadastrar",  
                                #fg_color='White',   
-                                font=('verdana',10, 'bold'), command=self.add_produtos)
+                                font=('verdana',10, 'bold'), command=self.Cadastro)
         self.bt_cadastrar.place(relx= 0.6, rely=0.5, relheight=0.4)
 
         ### Criação da Label Title
@@ -325,7 +363,6 @@ class Aplicativo(Funcs):
         self.ListaCli.configure(yscroll=self.scrolLista.set)
         self.scrolLista.place(relx=0.96, rely=0.1, relwidth=0.02, relheight=0.85)
         self.ListaCli.bind("<Double-1>", self.DuploClicLista)
-
 
 
 
