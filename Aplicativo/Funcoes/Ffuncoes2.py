@@ -27,7 +27,7 @@ class Funcs():
                 cod INTEGER PRIMARY KEY,    
                 nome_produto CHAR(50) NOT NULL,
                 preço INTEGER(20),
-                desconto CHAR(40)
+                quantidade CHAR(40)
                             
                 );
             """)
@@ -38,20 +38,23 @@ class Funcs():
         self.entnome = self.ent_nome.get()
         self.desconto = self.ent_par.get()
         self.preço = self.ent_val.get()
+        #Variáveis TelaNova
+        self.entnome1 = self.ent1_nome.get()
+        self.quant1 = self.ent1_quant.get()
+        self.preço1 = self.ent1_valor.get()
     def add_produtos(self):
         self.variaveis()
         self.conecta_bd()
-
-        self.cursor.execute(""" INSERT INTO clientes (nome_produto, preço, desconto)
-                            VALUES(?,?,?)""",(self.entnome, self.preço, self.desconto))
+        self.cursor.execute(""" INSERT INTO clientes (nome_produto, preço, quantidade)
+                            VALUES(?,?,?)""",(self.entnome1, self.preço1, self.quant1))
         self.conn.commit()
         self.desconecta_bd()
         self.select_cadastrar()
     def select_cadastrar(self):
         self.ListaCli.delete(*self.ListaCli.get_children())
         self.conecta_bd()
-        lista = self.cursor.execute(""" SELECT cod, nome_produto, preço, desconto FROM clientes
-                                    ORDER BY nome_produto ASC; """) #ASC ordem crescente DES decrescente
+        lista = self.cursor.execute(""" SELECT cod, nome_produto, preço, quantidade FROM clientes
+                                    ORDER BY cod ASC; """) #ASC ordem crescente DES decrescente
         for i in lista:
             self.ListaCli.insert("", END, values =i)
         self.desconecta_bd()
@@ -179,7 +182,10 @@ class Funcs():
             self.ent_val.insert(END, col3)
             self.ent_par.insert(END, col4)
     def deleta_produto(self):
-        self.variaveis()
+        self.codigo = self.ent_codigo.get()
+        self.entnome = self.ent_nome.get()
+        self.desconto = self.ent_par.get()
+        self.preço = self.ent_val.get()
         self.conecta_bd()
         self.cursor.execute("""DELETE FROM clientes WHERE cod = ? """, (self.codigo))
         self.conn.commit()
@@ -235,7 +241,7 @@ class Aplicativo(Funcs):
         self.bt_limpar.place(relx= 0.1, rely=0.5, relheight=0.4, relwidth = 0.2)
 
         ###Criação do botão buscar
-        self.bt_config = customtkinter.CTkButton(self.frame_title, text="Config",    
+        self.bt_config = customtkinter.CTkButton(self.frame_title, text="Excluir",    
                                 font=('verdana', 10, 'bold'), command= self.deleta_produto)
         self.bt_config.place(relx= 0.32, rely=0.5, relheight=0.4, relwidth = 0.2)
 
@@ -308,7 +314,7 @@ class Aplicativo(Funcs):
         self.ListaCli.heading('#1', text='Código')
         self.ListaCli.heading('#2', text='Produto')
         self.ListaCli.heading('#3', text='Preço')
-        self.ListaCli.heading('#4', text='Desconto')
+        self.ListaCli.heading('#4', text='Quantidade')
 
         self.ListaCli.column('#0', width=1)
         self.ListaCli.column('#1', width=50)
@@ -327,7 +333,7 @@ class Aplicativo(Funcs):
         self.cadastro.title("Cadastro de Produto")
         self.cadastro.configure(background='#1e3743')
         self.cadastro.geometry('600x500')
-        self.cadastro.resizable(True, True)
+        self.cadastro.resizable(False, False)
         ###############################################################################
         self.frame_1 = customtkinter.CTkFrame(self.cadastro, fg_color = 'lightgray',    
                             #highlightbackground='lightblue', highlightthickness=2
@@ -339,19 +345,29 @@ class Aplicativo(Funcs):
                         font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
         self.lb1_nome.place(relx = 0.04, rely=0.02, relwidth=0.24)
         self.ent1_nome = Entry(self.cadastro, font=('verdana', 9, 'bold'))
-        self.ent1_nome.place(relx=0.04, rely=0.08, relwidth=0.3, relheight=0.05)
+        self.ent1_nome.place(relx=0.04, rely=0.08, relwidth=0.6, relheight=0.05)
         ###############################################################################
         self.lb1_valor = customtkinter.CTkLabel(self.cadastro, text="Valor do produto",     
                         font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
         self.lb1_valor.place(relx = 0.04, rely=0.14, relwidth=0.24)
         self.ent1_valor = Entry(self.cadastro, font=('verdana', 9, 'bold'))
         self.ent1_valor.place(relx=0.04, rely=0.2, relwidth=0.3, relheight=0.05)
+        ###############################################################################
+        self.lb1_quant = customtkinter.CTkLabel(self.cadastro, text="Quantidade",     
+                        font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
+        self.lb1_quant.place(relx = 0.04, rely=0.26, relwidth=0.24)
+        self.ent1_quant = Entry(self.cadastro, font=('verdana', 9, 'bold'))
+        self.ent1_quant.place(relx=0.04, rely=0.32, relwidth=0.3, relheight=0.05)
         
         # Botão Fechar
         self.close_button = customtkinter.CTkButton(self.cadastro, text="Fechar",   
                                                     command=self.cadastro.destroy)
-        self.close_button.pack(pady=10)
-        self.close_button.place(relx = 0.4, rely = 0.9)
+        self.close_button.place(relx = 0.52, rely = 0.8)
+        # Botão Cadastrar
+        self.close_button = customtkinter.CTkButton(self.cadastro, text="Cadastrar",   
+                                                    command=self.add_produtos)
+        self.close_button.place(relx = 0.28, rely = 0.8)
+
         ###############################################################################
 
 
