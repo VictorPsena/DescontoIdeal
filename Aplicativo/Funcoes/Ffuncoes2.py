@@ -161,13 +161,52 @@ class Funcs():
                 self.butao4.place(x = 105, y=50, width=50, height= 30)    
                 self.erro.mainloop()
         return self.v
+    def quantos_produtos(self):
+        self.quant = self.ent_quant.get()
+        self.v = self.ent_val.get()
+        try:
+            self.quant = int(self.quant)
+            if  self.quant > 20:
+                self.erro = Tk()
+                self.erro.geometry("270x100+710+253")
+                self.erro.title("ERRO")
+                self.erro.resizable(False, False)
+                self.texto = Label(self.erro, text="É permitido apenas a compra de 20 unidades",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
+                self.texto.place(x = 10, y =10, width= 250, height= 30)
+                self.butao4 = Button(self.erro, text="OK", command= self.erro.destroy,font="Impact", justify=CENTER, foreground="green" )
+                self.butao4.place(x = 105, y=50, width=50, height= 30)
+            
+            elif self.quant <= 0:
+                self.erro = Tk()
+                self.erro.geometry("270x100+710+253")
+                self.erro.title("ERRO")
+                self.erro.resizable(False, False)
+                self.texto = Label(self.erro, text="Pelo menos uma unidade",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
+                self.texto.place(x = 10, y =10, width= 250, height= 30)
+                self.butao4 = Button(self.erro, text="OK", command= self.erro.destroy,font="Impact", justify=CENTER, foreground="green" )
+                self.butao4.place(x = 105, y=50, width=50, height= 30)
+                self.erro.mainloop()
+
+        except(ValueError, TypeError):
+                self.erro = Tk()
+                self.erro.geometry("270x100+710+253")
+                self.erro.title("ERRO")
+                self.erro.resizable(False, False)
+                self.texto = Label(self.erro, text="Digíte um número, obrigado...",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
+                self.texto.place(x = 10, y =10, width= 250, height= 30)
+                self.butao4 = Button(self.erro, text="OK", command= self.erro.destroy,font="Impact", justify=CENTER, foreground="green" )
+                self.butao4.place(x = 105, y=50, width=50, height= 30)    
+                self.erro.mainloop()
+        return self.quant
     def widgets_frame_1_1(self):
         self.debcred = self.dc()
         self.bandeiraa = self.bandeira()
         self.parcellas = self.parcelas()
         self.valProduto = self.val_produto()
+        self.quantProdutos = self.quantos_produtos()
+        self.valor = self.valProduto*self.quantProdutos # Calcula o valor*quantidade
         self.taxa = TaxaBandeira(str(self.bandeiraa), self.parcellas, self.debcred)
-        self.lista = ldp(float(self.valProduto), self.bandeiraa, self.taxa)
+        self.lista = ldp(float(self.valor), self.bandeiraa, self.taxa)
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
                       text= f'Lucro: R${self.lista[0]:.2f} \n Margem de lucro: {self.lista[1]:.2f}% \n Preço Ideal: R${self.lista[2]:.2f} \n  Desconto Máximo: R${self.lista[3]:.2f} \n Lucro mínimo: R${self.lista[4]:.2f} \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       font=('verdana', 20), text_color='#107db2')
@@ -259,19 +298,19 @@ class Aplicativo(Funcs):
     def widgets_frame_1(self):
 
         ### Criação da Label Title
+        self.lb_codigo = customtkinter.CTkLabel(self.frame_1, text="Cod",     
+                                  font=('verdana', 9), text_color='#107db2')
+        self.lb_codigo.place(relx = 0.01, rely=0.01, relwidth=0.1)   
+        self.ent_codigo = customtkinter.CTkEntry(self.frame_1, font=('verdana', 10, 'bold'),    
+                                                  fg_color="White", text_color="Black")
+        self.ent_codigo.place(relx=0.032, rely=0.08, relwidth=0.06, relheight=0.04)
+        ###############################################################################
         self.lb_bandeira = customtkinter.CTkLabel(self.frame_1, text="Qual é a bandeira do cartão?",     
                                   font=('verdana', 14), text_color='#107db2')
         self.lb_bandeira.place(relx = 0.03, rely=0.12, relwidth=0.5)
 
         self.ent_bandeira = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_bandeira.place(relx=0.03, rely=0.2, relwidth=0.5, relheight=0.1)
-        ###############################################################################
-        self.lb_codigo = customtkinter.CTkLabel(self.frame_1, text="Código",     
-                                  font=('verdana', 14), text_color='#107db2')
-        self.lb_codigo.place(relx = 0.02, rely=0.01, relwidth=0.1)   
-        self.ent_codigo = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'),    
-                                                  fg_color="White", text_color="Black")
-        self.ent_codigo.place(relx=0.03, rely=0.08, relwidth=0.08, relheight=0.06)
         ###############################################################################
         self.lb_dc = customtkinter.CTkLabel(self.frame_1, text="Vai ser no Crédito ou no Débito?",     
                                   font=('verdana', 14), text_color='#107db2')
