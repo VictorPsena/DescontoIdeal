@@ -77,6 +77,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  
                  mediaprecos = precos/len(listapreco)
                  Val_Comp = ValorCompra
+                 Val_Pix = ValorCompra*taxa + ValorCompra
                  Val_Vend = mediaprecos + listapreco[23]*ValorCompra
                  Lucro_Liq = Val_Vend - TaxaCartao*Val_Vend - Val_Comp
                  Lucro_marg = Lucro_Liq/Val_Vend
@@ -86,7 +87,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  if Lucro_marg < 0.1:
                     return 1
                  else:
-                    return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
+                    return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina, Val_Pix ]
         
             elif  5000 <= ValorCompra <= 50000: #grupo 3
                  taxa = 0.07 # aqui muda
@@ -96,6 +97,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  
                  mediaprecos = precos/len(listapreco)
                  Val_Comp = ValorCompra
+                 Val_Pix = ValorCompra*taxa + ValorCompra
                  Val_Vend = mediaprecos + listapreco[23]*ValorCompra
                  Lucro_Liq = Val_Vend - TaxaCartao*Val_Vend - Val_Comp
                  Lucro_marg = Lucro_Liq/Val_Vend
@@ -106,7 +108,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  if Lucro_marg < 0.08:
                     return 1
                  else:
-                    return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
+                    return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina, Val_Pix ]
                 
 
         elif bandeira == 'e' or bandeira == 'h':
@@ -118,6 +120,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  
                     mediaprecos = precos/len(listapreco)
                     Val_Comp = ValorCompra
+                    Val_Pix = ValorCompra*taxa + ValorCompra
                     Val_Vend = mediaprecos + listapreco[23]*ValorCompra
                     Lucro_Liq = Val_Vend - TaxaCartao*Val_Vend - Val_Comp
                     Lucro_marg = Lucro_Liq/Val_Vend
@@ -127,7 +130,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                     if Lucro_marg < 0.1:
                         return 1
                     else:
-                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
+                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina, Val_Pix ]
 
 
             elif  500 <= ValorCompra < 5000:
@@ -138,6 +141,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  
                     mediaprecos = precos/len(listapreco)
                     Val_Comp = ValorCompra
+                    Val_Pix = ValorCompra*taxa + ValorCompra
                     Val_Vend = mediaprecos + listapreco[23]*ValorCompra
                     Lucro_Liq = Val_Vend - TaxaCartao*Val_Vend - Val_Comp
                     Lucro_marg = Lucro_Liq/Val_Vend
@@ -149,7 +153,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                         return 1
                     
                     else:
-                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
+                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina, Val_Pix ]
 
             elif 5000 <= ValorCompra <= 50000:
                     taxa = 0.08
@@ -159,6 +163,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  
                     mediaprecos = precos/len(listapreco)
                     Val_Comp = ValorCompra
+                    Val_Pix = ValorCompra*taxa + ValorCompra
                     Val_Vend = mediaprecos + listapreco[22]*ValorCompra
                     Lucro_Liq = Val_Vend - TaxaCartao*Val_Vend - Val_Comp
                     Lucro_marg = Lucro_Liq/Val_Vend
@@ -170,7 +175,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                         return 1
 
                     else:
-                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina ]
+                        return [Lucro_Liq, Lucro_marg*100, Val_Vend, desconMax, lucromin, taxamaquina, Val_Pix ]
 
         break
 

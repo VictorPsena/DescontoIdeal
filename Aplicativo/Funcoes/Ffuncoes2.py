@@ -166,7 +166,7 @@ class Funcs():
         self.v = self.ent_val.get()
         try:
             self.quant = int(self.quant)
-            if  self.quant > 20:
+            if  self.quant > 100:
                 self.erro = Tk()
                 self.erro.geometry("270x100+710+253")
                 self.erro.title("ERRO")
@@ -208,7 +208,7 @@ class Funcs():
         self.taxa = TaxaBandeira(str(self.bandeiraa), self.parcellas, self.debcred)
         self.lista = ldp(float(self.valor), self.bandeiraa, self.taxa)
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
-                      text= f'Lucro: R${self.lista[0]:.2f} \n Margem de lucro: {self.lista[1]:.2f}% \n Preço Ideal: R${self.lista[2]:.2f} \n  Desconto Máximo: R${self.lista[3]:.2f} \n Lucro mínimo: R${self.lista[4]:.2f} \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
+                      text= f' Preço a vista no PIX: R${self.lista[6]} \n Preço Ideal: R${self.lista[2]:.2f} \n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       font=('verdana', 20), text_color='#107db2')
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
     def DuploClicLista(self, event):
@@ -220,12 +220,12 @@ class Funcs():
             self.ent_codigo.insert(END, col1)
             self.ent_nome.insert(END, col2)
             self.ent_val.insert(END, col3)
-            self.ent_par.insert(END, col4)
+            self.ent_quant.insert(END, col4)
     def deleta_produto(self):
         self.codigo = self.ent_codigo.get()
         self.entnome = self.ent_nome.get()
         self.desconto = self.ent_par.get()
-        self.preço = self.ent_val.get()
+        self.quantidade = self.ent_quant.get()
         self.conecta_bd()
         self.cursor.execute("""DELETE FROM clientes WHERE cod = ? """, (self.codigo))
         self.conn.commit()
