@@ -4,6 +4,9 @@ from tkinter import ttk
 import sqlite3
 from Ffuncoes import *
 import customtkinter
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+import tkinter.messagebox as messagebox
 root = customtkinter.CTk()
 
 class Funcs():
@@ -232,6 +235,43 @@ class Funcs():
         self.desconecta_bd()
         self.limpa_tela()
         self.select_cadastrar()    
+    def mostrar_grafico(self):
+        try:
+            lucro_pix = float(self.lista[6]) 
+            lucro_minimo = float(self.lista[4])
+            tarifa = float(self.lista[5])
+            lucro_ideal = float(self.lista[2]) - tarifa
+
+            categorias = ['Pix','Lucro Ideal', 'Lucro Mínimo', 'Tarifa']
+            lucros = [lucro_pix, lucro_ideal, lucro_minimo, tarifa]
+        except Exception as e:
+            messagebox.showerror("Erro", f"Não foi possível gerar o gráfico.\n{e}")
+            return
+        nova_janela = customtkinter.CTkToplevel(self.root)
+        nova_janela.title("Gráfico de Lucros")
+        nova_janela.geometry("700x500")
+        nova_janela.configure(bg='white')
+        
+        # Criar gráfico
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.bar(categorias, lucros, color='skyblue')
+        bars = ax.bar(categorias, lucros, color='skyblue')
+        ax.set_title('Lucro por forma de pagamento')
+        ax.set_ylabel('Lucro (R$)')
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,   # posição x central
+                height + 1,                          # posição y logo acima da barra
+                f'R${height:.2f}',                   # valor formatado
+                ha='center', va='bottom', fontsize=10, color='black'
+            )
+
+
+        # Inserir gráfico na nova janela
+        canvas = FigureCanvasTkAgg(fig, master=nova_janela)
+        canvas.draw()
+        canvas.get_tk_widget().pack(pady=20)
 class Aplicativo(Funcs):
     #Coloquei 'Funcs dentro da classe para informar que ela pode utilizar as funções da 'class Funcs'
     # Abre a tela principal do Aplivativo
@@ -347,7 +387,10 @@ class Aplicativo(Funcs):
         self.ent_nome.place(relx=0.55, rely=0.4, relwidth=0.4, relheight=0.1)
         ### Criação do botão enviar 
         self.bt_enviar = customtkinter.CTkButton(self.frame_1, text='Enviar', font=('verdana', 14, 'bold'), command=self.widgets_frame_1_1)
-        self.bt_enviar.place(relx= 0.65, rely=0.8, relheight=0.1)         
+        self.bt_enviar.place(relx= 0.65, rely=0.65, relheight=0.1)
+        ###############################################################################
+        self.bt_enviar = customtkinter.CTkButton(self.frame_1, text='gráfico', font=('verdana', 14, 'bold'), command=self.mostrar_grafico)
+        self.bt_enviar.place(relx= 0.65, rely=0.8, relheight=0.1)
     def lista_frame_2(self):
         self.ListaCli = ttk.Treeview(self.frame_2, height=3, columns=('clo1', 'clo2', 'clo3','col4'))
         self.ListaCli.heading('#0', text='')
