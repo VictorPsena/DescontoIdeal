@@ -64,6 +64,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  desconMax = Val_Vend - (ValorCompra*taxa + ValorCompra) - TaxaCartao*Val_Vend # o desconto máximo está deixando apenas os 12% de lucro mínimo para esse tipo de valor.
                  lucromin = ValorCompra*taxa
                  taxamaquina = Val_Vend*TaxaCartao
+                
                  if Lucro_marg < 0.1:
                     return 1
                  else:
@@ -106,6 +107,7 @@ def ldp(ValorCompra,  bandeira, TaxaCartao):
                  lucromin = ValorCompra*taxa
                  taxamaquina = Val_Vend*TaxaCartao
 
+                                
                  if Lucro_marg < 0.08:
                     return 1
                  else:

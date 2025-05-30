@@ -22,7 +22,7 @@ class Funcs():
         self.conn = sqlite3.connect('clientes.bd')
         self.cursor = self.conn.cursor(); 
     def desconecta_bd(self):
-        self.conn.close(); print('Conectando ao banco de dados')
+        self.conn.close();
     def montaTabelas(self):
         self.conecta_bd(); print('Conectando ao banco de dados')
         ### Criar Tabela
@@ -43,9 +43,10 @@ class Funcs():
         self.desconto = self.ent_par.get()
         self.preço = self.ent_val.get()
         #Variáveis TelaNova
-        self.entnome1 = self.ent1_nome.get()
-        self.quant1 = self.ent1_quant.get()
-        self.preço1 = self.ent1_valor.get()
+        if hasattr(self, 'ent1_nome'):
+            self.entnome1 = self.ent1_nome.get()
+            self.quant1 = self.ent1_quant.get()
+            self.preço1 = self.ent1_valor.get()
     def add_produtos(self):
         self.variaveis()
         self.conecta_bd()
@@ -68,15 +69,14 @@ class Funcs():
         try:
             self.lista1.index(self.c)
         except (ValueError, TypeError):
-            self.erro = Tk()
+            self.erro = customtkinter.CTkToplevel(self.root)
             self.erro.geometry("270x100+710+253")
             self.erro.title("ERRO")
             self.erro.resizable(False, False)
-            self.texto = Label(self.erro, text="Escolha entre crédito ou débito.",background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
-            self.texto.place(x = 10, y =10, width= 250, height= 30)
-            self.butao1 = Button(self.erro, text="OK", command= self.erro.destroy,font="Impact", justify=CENTER, foreground="green" )
-            self.butao1.place(x = 105, y=50, width=50, height= 30)
-            self.erro.mainloop()
+            self.texto = customtkinter.CTkLabel(self.erro, text="Escolha entre crédito ou débito.")
+            self.texto.pack(pady=10)
+            self.butao1 = customtkinter.CTkButton(self.erro, text="OK", command=self.erro.destroy)
+            self.butao1.pack(pady=5)
         return self.c
     def bandeira(self):
         self.band = self.ent_bandeira.get().lower().strip()[0]
@@ -84,15 +84,14 @@ class Funcs():
         try:
            self.lista.index(self.band)
         except (ValueError, TypeError):
-            self.erro = Tk()
+            self.erro = customtkinter.CTkToplevel(self.root)
             self.erro.geometry("270x100+710+253")
             self.erro.title("ERRO")
             self.erro.resizable(False, False)
-            self.texto = Label(self.erro, text="Digite uma bandeira válida. \n  visa, mastercard, elo, hipercard",  
-                               background= '#dde', foreground='#FF6666', anchor= N, font="Impact")
-            self.texto.place(x = 10, y =10, width= 250, height= 50)
-            self.butao2 = Button(self.erro, text="OK", command= self.erro.destroy,font="Impact", justify=CENTER, foreground="green" )
-            self.butao2.place(x = 105, y=65, width=50, height= 30)
+            self.texto = customtkinter.CTkLabel(self.erro, text="Digite uma bandeira válida. \n  visa, mastercard, elo, hipercard")
+            self.texto.pack(pady=10)
+            self.butao2 = customtkinter.CTkButton(self.erro, text="OK", command= self.erro.destroy)
+            self.butao2.pack(pady=5)
         
 
             self.erro.mainloop()
@@ -210,8 +209,9 @@ class Funcs():
         self.valor = self.valProduto*self.quantProdutos # Calcula o valor*quantidade
         self.taxa = TaxaBandeira(str(self.bandeiraa), self.parcellas, self.debcred)
         self.lista = ldp(float(self.valor), self.bandeiraa, self.taxa)
+        self.precoCadaProduto = self.lista[2]/self.quantProdutos
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
-                      text= f' Preço a vista no PIX: R${self.lista[6]} \n Preço Ideal: R${self.lista[2]:.2f} \n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
+                      text= f' Preço a vista no PIX: R${self.lista[6]} \n   Preço Ideal: R${self.lista[2]:.2f} \n P.C.P: R${self.precoCadaProduto:.2f}\n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       font=('verdana', 20), text_color='#107db2')
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
     def DuploClicLista(self, event):
@@ -450,6 +450,7 @@ class Aplicativo(Funcs):
         self.close_button = customtkinter.CTkButton(self.cadastro, text="Cadastrar",   
                                                     command=self.add_produtos)
         self.close_button.place(relx = 0.28, rely = 0.8)
+
 
         ###############################################################################
 
