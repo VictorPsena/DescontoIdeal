@@ -46,12 +46,13 @@ class Funcs():
         if hasattr(self, 'ent1_nome'):
             self.entnome1 = self.ent1_nome.get()
             self.quant1 = self.ent1_quant.get()
-            self.preço1 = self.ent1_valor.get()
+            self.preço1 = float(self.ent1_valor.get())
+            self.preçoideal = calcular_precos(self.preço1, 0.12)
     def add_produtos(self):
         self.variaveis()
         self.conecta_bd()
         self.cursor.execute(""" INSERT INTO clientes (nome_produto, preço, quantidade)
-                            VALUES(?,?,?)""",(self.entnome1, self.preço1, self.quant1))
+                            VALUES(?,?,?)""",(self.entnome1, int(self.preçoideal[1]), self.quant1))
         self.conn.commit()
         self.desconecta_bd()
         self.select_cadastrar()
