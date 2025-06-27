@@ -212,7 +212,7 @@ class Funcs():
         self.lista = ldp(float(self.valor), self.bandeiraa, self.taxa)
         self.precoCadaProduto = self.lista[2]/self.quantProdutos
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
-                      text= f' Preço a vista no PIX: R${self.lista[6]} \n   Preço Ideal: R${self.lista[2]:.2f} \n P.C.P: R${self.precoCadaProduto:.2f}\n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
+                      text= f' Preço a vista no PIX: R${self.lista[6]:.2f} \n   Preço Ideal: R${self.lista[2]:.2f} \n P.C.P: R${self.precoCadaProduto:.2f}\n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
                       font=('verdana', 20), text_color='#107db2')
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
     def DuploClicLista(self, event):
@@ -238,13 +238,11 @@ class Funcs():
         self.select_cadastrar()    
     def mostrar_grafico(self):
         try:
-            lucro_pix = float(self.lista[6]) 
-            lucro_minimo = float(self.lista[4])
-            tarifa = float(self.lista[5])
-            lucro_ideal = float(self.lista[2]) - tarifa
+            preco = self.precoCadaProduto
+            quantidade = self.quantProdutos
+            categorias = [f'{quantidade}', f'{int(5000/preco)}', f'{int(25000/preco)}', f'{int(50000/preco)}']
+            lucros = [preco, preco - 0.02*preco , preco - 0.05*preco, preco-0.07*preco]
 
-            categorias = ['Pix','Lucro Ideal', 'Lucro Mínimo', 'Tarifa']
-            lucros = [lucro_pix, lucro_ideal, lucro_minimo, tarifa]
         except Exception as e:
             messagebox.showerror("Erro", f"Não foi possível gerar o gráfico.\n{e}")
             return
@@ -257,8 +255,8 @@ class Funcs():
         fig, ax = plt.subplots(figsize=(6, 4))
         ax.bar(categorias, lucros, color='skyblue')
         bars = ax.bar(categorias, lucros, color='skyblue')
-        ax.set_title('Lucro por forma de pagamento')
-        ax.set_ylabel('Lucro (R$)')
+        ax.set_title('Quantidade de produtos comprados')
+        ax.set_ylabel('Preços das unidades')
         for bar in bars:
             height = bar.get_height()
             ax.text(

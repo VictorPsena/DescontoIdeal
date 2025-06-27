@@ -51,19 +51,25 @@ def ldp(valor_compra, bandeira, taxa_cartao):
         if valor_compra < 500:
             taxa_lucro = 0.12
             margem_minima = 0.10
-        elif valor_compra < 5000:
+        elif valor_compra >= 500 or valor_compra < 5000:
             taxa_lucro = 0.10
             margem_minima = 0.10
-        else:
+        elif valor_compra >= 5000 or valor_compra < 25000:
             taxa_lucro = 0.07
             margem_minima = 0.08
+        else:
+            taxa_lucro = 0.05
+            margem_minima = 0.06
     else:  # Bandeeiras 'e' ou 'h'
         if valor_compra < 500:
             taxa_lucro = 0.12
             margem_minima = 0.10
-        elif valor_compra < 5000:
+        elif valor_compra >= 500 or valor_compra < 5000:
             taxa_lucro = 0.10
             margem_minima = 0.08
+        elif valor_compra >= 5000 or valor_compra < 25000:
+            taxa_lucro = 0.07
+            margem_minima = 0.06
         else:
             taxa_lucro = 0.08
             margem_minima = 0.05
