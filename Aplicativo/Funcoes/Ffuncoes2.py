@@ -7,6 +7,7 @@ import customtkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import tkinter.messagebox as messagebox
+import locale
 root = customtkinter.CTk()
 
 class Funcs():
@@ -212,8 +213,8 @@ class Funcs():
         self.lista = ldp(float(self.valor), self.bandeiraa, self.taxa)
         self.precoCadaProduto = self.lista[2]/self.quantProdutos
         self.label = customtkinter.CTkLabel(self.frame_1_1,   
-                      text= f' Preço a vista no PIX: R${self.lista[6]:.2f} \n   Preço Ideal: R${self.lista[2]:.2f} \n P.C.P: R${self.precoCadaProduto:.2f}\n Desconto Máximo: R${self.lista[3]:.2f} \n Lucro: R${self.lista[0]:.2f} \n  Lucro mínimo: R${self.lista[4]:.2f} \n Margem de lucro: {self.lista[1]:.2f}%  \n Tarifa da maquininha: R${self.lista[5]:.2f} \n Parcelas: R${self.lista[2]/int(self.ent_par.get()):.2f}',    
-                      font=('verdana', 20), text_color='#107db2')
+                      text= f' Preço a vista no PIX: R${format(self.lista[6], ".2f").replace(".",",")} \n   Preço Ideal: R${format(self.lista[2], ".2f").replace(".",",")} \n P.C.P: R${format(self.precoCadaProduto, ".2f").replace(".",",")}\n Desconto Máximo: R${format(self.lista[3], ".2f").replace(".",",")} \n Lucro: R${format(self.lista[0], ".2f").replace(".",",")} \n  Lucro mínimo: R${format(self.lista[4], ".2f").replace(".",",")} \n Margem de lucro: {format(self.lista[1], ".2f").replace(".",",")}%  \n Tarifa da maquininha: R${format(self.lista[5], ".2f").replace(".",",")} \n Parcelas: R${format(self.lista[2]/int(self.ent_par.get()), ".2f").replace(".",",")}',    
+                      font=('verdana', 20), text_color="#000000")
         self.label.place(relx=0.02, relheight= 0.96, relwidth= 0.96)
     def DuploClicLista(self, event):
         self.limpa_tela()
@@ -252,17 +253,17 @@ class Funcs():
         nova_janela.configure(bg='white')
         
         # Criar gráfico
-        fig, ax = plt.subplots(figsize=(6, 4))
+        fig, ax = plt.subplots(figsize=(8, 6))
         ax.bar(categorias, lucros, color='skyblue')
         bars = ax.bar(categorias, lucros, color='skyblue')
-        ax.set_title('Quantidade de produtos comprados')
+        ax.set_xlabel('Quantidades de produtos comprados')
         ax.set_ylabel('Preços das unidades')
         for bar in bars:
             height = bar.get_height()
             ax.text(
                 bar.get_x() + bar.get_width() / 2,   # posição x central
                 height + 1,                          # posição y logo acima da barra
-                f'R${height:.2f}',                   # valor formatado
+                f'R${height:.2f}'.replace(".",","),                   # valor formatado
                 ha='center', va='bottom', fontsize=10, color='black'
             )
 
@@ -332,55 +333,55 @@ class Aplicativo(Funcs):
 
         ### Criação da Label Title
         self.lb_title = Label(self.frame_title, text="Análise de Descontos", bg = 'lightgray',  
-                              font=('verdana', 14, 'bold'), fg='#107db2')
+                              font=('verdana', 14, 'bold'), fg="#000000")
         self.lb_title.place(relx=0.1, rely=0.08)    
     def widgets_frame_1(self):
 
         ### Criação da Label Title
         self.lb_codigo = customtkinter.CTkLabel(self.frame_1, text="Cod",     
-                                  font=('verdana', 9), text_color='#107db2')
+                                  font=('verdana', 9), text_color="#000000")
         self.lb_codigo.place(relx = 0.01, rely=0.01, relwidth=0.1)   
         self.ent_codigo = customtkinter.CTkEntry(self.frame_1, font=('verdana', 10, 'bold'),    
                                                   fg_color="White", text_color="Black")
         self.ent_codigo.place(relx=0.032, rely=0.08, relwidth=0.06, relheight=0.04)
         ###############################################################################
         self.lb_bandeira = customtkinter.CTkLabel(self.frame_1, text="Qual é a bandeira do cartão?",     
-                                  font=('verdana', 14), text_color='#107db2')
+                                  font=('verdana', 14), text_color="#000000")
         self.lb_bandeira.place(relx = 0.03, rely=0.12, relwidth=0.5)
 
         self.ent_bandeira = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_bandeira.place(relx=0.03, rely=0.2, relwidth=0.5, relheight=0.1)
         ###############################################################################
         self.lb_dc = customtkinter.CTkLabel(self.frame_1, text="Vai ser no Crédito ou no Débito?",     
-                                  font=('verdana', 14), text_color='#107db2')
+                                  font=('verdana', 14), text_color="#000000")
         self.lb_dc.place(relx = 0.03, rely=0.32, relwidth=0.5)
 
         self.ent_dc = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_dc.place(relx=0.03, rely=0.4, relwidth=0.5, relheight=0.1)
         ###############################################################################
         self.lb_par = customtkinter.CTkLabel(self.frame_1, text="Quantas Parcelas?",     
-                                  font=('verdana', 14), text_color='#107db2')
+                                  font=('verdana', 14), text_color="#000000")
         self.lb_par.place(relx = 0.03, rely=0.52, relwidth=0.5)
 
         self.ent_par = customtkinter.CTkEntry(self.frame_1, bg_color = 'White', font=('verdana', 14, 'bold'))
         self.ent_par.place(relx=0.03, rely=0.6, relwidth=0.5, relheight=0.1)
         ###############################################################################
         self.lb_val = customtkinter.CTkLabel(self.frame_1, text="Valor do produto?",     
-                                  font=('verdana', 14), text_color='#107db2')
+                                  font=('verdana', 14), text_color="#000000")
         self.lb_val.place(relx = 0.03, rely=0.72, relwidth=0.5)
 
         self.ent_val = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_val.place(relx=0.03, rely=0.8, relwidth=0.5, relheight=0.1)
         ###############################################################################
         self.lb_quant = customtkinter.CTkLabel(self.frame_1, text="Quantidade do mesmo produto?",     
-                                  font=('verdana', 14), text_color='#107db2')
+                                  font=('verdana', 14), text_color="#000000")
         self.lb_quant.place(relx = 0.55, rely=0.12, relwidth=0.4)
 
         self.ent_quant = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_quant.place(relx=0.55, rely=0.2, relwidth=0.4, relheight=0.1)
         ###############################################################################
         self.lb_nome = customtkinter.CTkLabel(self.frame_1, text="Nome do produto",     
-                        font=('verdana', 14), text_color='#107db2')
+                        font=('verdana', 14), text_color="#000000")
         self.lb_nome.place(relx = 0.55, rely=0.32, relwidth=0.4)
         self.ent_nome = customtkinter.CTkEntry(self.frame_1, font=('verdana', 14, 'bold'))
         self.ent_nome.place(relx=0.55, rely=0.4, relwidth=0.4, relheight=0.1)
@@ -424,19 +425,19 @@ class Aplicativo(Funcs):
                            relheight=0.94)
         ###############################################################################
         self.lb1_nome = customtkinter.CTkLabel(self.cadastro, text="Nome do produto",     
-                        font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
+                        font=('verdana', 14, 'bold'), text_color="#000000", fg_color='lightgray')
         self.lb1_nome.place(relx = 0.04, rely=0.02, relwidth=0.24)
         self.ent1_nome = Entry(self.cadastro, font=('verdana', 9, 'bold'))
         self.ent1_nome.place(relx=0.04, rely=0.08, relwidth=0.6, relheight=0.05)
         ###############################################################################
         self.lb1_valor = customtkinter.CTkLabel(self.cadastro, text="Valor do produto",     
-                        font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
+                        font=('verdana', 14, 'bold'), text_color="#000000", fg_color='lightgray')
         self.lb1_valor.place(relx = 0.04, rely=0.14, relwidth=0.24)
         self.ent1_valor = Entry(self.cadastro, font=('verdana', 9, 'bold'))
         self.ent1_valor.place(relx=0.04, rely=0.2, relwidth=0.3, relheight=0.05)
         ###############################################################################
         self.lb1_quant = customtkinter.CTkLabel(self.cadastro, text="Quantidade",     
-                        font=('verdana', 14, 'bold'), text_color='#107db2', fg_color='lightgray')
+                        font=('verdana', 14, 'bold'), text_color="#000000", fg_color='lightgray')
         self.lb1_quant.place(relx = 0.04, rely=0.26, relwidth=0.24)
         self.ent1_quant = Entry(self.cadastro, font=('verdana', 9, 'bold'))
         self.ent1_quant.place(relx=0.04, rely=0.32, relwidth=0.3, relheight=0.05)
